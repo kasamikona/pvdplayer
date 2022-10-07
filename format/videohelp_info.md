@@ -5,7 +5,8 @@ max,
 
 you are very far along. i think i know something that may help you.
 
-lcd displays are actually collections of dots - red, green, and blue dots. They are arranged in a pattern like this ...
+lcd displays are actually collections of dots - red, green, and blue dots. They are arranged in a pattern like this[^gmissing] ...
+[^gmissing]: Diagrams show every other row shifted right and starting with B .. , really they are shifted left and start with G B ..
 
 ```
 R G B R G B R G B R G B
@@ -56,14 +57,13 @@ Each audio track is taken as a byte sequence. The first track is special: I dont
 240 bytes of 0x81, 0xe3, 0xe3, 0xc7, 0xc7, 0x81, 0x81, 0xe3, 0xc7, 0xNN  
 120 bytes of 0x00, 0x00, 0x02, 0x01, 0x04, 0x02, 0x06, 0x03, 0xff, 0xNN etc (see a real disc for this pattern)  
 40 bytes of 9 0xFFs, one 0xNN (NN=audio byte, see later), some kind of sync  
-19200 Video of frame[^fn484-1]
-[^fn484-1]: *bytes of video frame data
+19200 Video of frame[^videoofframe]
+[^videoofframe]: *bytes of video frame data
 
-Audio is every 10th byte, starting after the N bytes of header. It is ~~stereo, 17640Hz, Stereo~~[^fn484-2], 8-bit unsigned.
-[^fn484-2]: Found to be 35280Hz mono, explains lack of any obvious left-right sync mechanism.
+Audio is every 10th byte, starting after the N bytes of header. It is stereo, 17640Hz, Stereo[^stereomono], 8-bit unsigned.
+[^stereomono]: Found to be 35280Hz mono, explains lack of any obvious left-right sync mechanism.
 
-Video is 18 frames per second. There are 160 scanlines of 120 bytes per frame, with a nibble per 'pixel'. 'Pixels' are strange though, being RGBRGB for even scans, ~~GBRGBR~~[^fn484-3] for odd ones (see good diagrams in earlier posts). If you take these as triangles, you get an effective resolution of 144 by 80.[^fn484-4]
-[^fn484-3]: *BRGBRG
-[^fn484-4]: Pixels are laid out in a 216x160 matrix, with every other row shifted by half a pixel. Interpreting groups of 3 as RGB triplets gives 144x80.
+Video is 18 frames per second. There are 160 scanlines of 120 bytes per frame, with a nibble per 'pixel'. 'Pixels' are strange though, being RGBRGB for even scans, GBRGBR for odd ones (see good diagrams in earlier posts). If you take these as triangles, you get an effective resolution of 144 by 80.[^pixelres]
+[^pixelres]: Pixels are laid out in a 216x160 matrix, with every other row shifted by half a pixel. Interpreting groups of 3 as RGB triplets gives 144x80.
 
 The disc is run at exactly double speed. CD-Rs work great, CD-RWs fail badly. I haven't got a minidisc to work. The last track is never played, so is 4 seconds of black on the discs I looked at.
